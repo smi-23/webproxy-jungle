@@ -277,6 +277,7 @@ void serve_static(int fd, char *filename, int filesize)
 
 /* get_filetype - Derive file type from filename */
 // strstr 두번째 인자가 첫번째 인자에 들어있는지 확인
+// 문자열이 있으면 해당 위치의 포인터(char *타입)을 반환합니다.
 void get_filetype(char *filename, char *filetype)
 {
   if (strstr(filename, ".html"))
@@ -288,9 +289,9 @@ void get_filetype(char *filename, char *filetype)
   else if (strstr(filename, ".jpg"))
     strcpy(filetype, "image/jpeg");
 
-  // //  11.7 숙련 문제 = Tiny 가 MPG 비디오 파일을 처리하도록 하기 (정글에선 MP4)
-  // else if (strstr(filename, ".mp4"))
-  //   strcpy(filetype, "video/mp4");
+  //  11.7 숙제 문제 = Tiny 가 MPG 비디오 파일을 처리하도록 하기 (정글에선 MP4)
+  else if (strstr(filename, ".mp4"))
+    strcpy(filetype, "video/mp4");
   else
     strcpy(filetype, "text/plain");
 }
