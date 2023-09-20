@@ -9,8 +9,7 @@ cache *new_cache()
     c->root = NULL; // 캐시의 첫 번째 노드 포인터를 초기화
     c->tail = NULL; // 캐시의 마지막 노드 포인터를 초기화
     c->size = 0;    // 캐시의 크기를 0으로 초기화
-    // 초기화된 캐시 구조체 포인터 반환
-    return c;
+    return c;       // 초기화된 캐시 구조체 포인터 반환
 }
 
 /* 새로운 캐시 노드를 생성하는 함수 */
@@ -34,7 +33,7 @@ cache_node *new_cache_node(char *key, char *value)
 /* 동적할당된 노드를 반환하는 함수 */
 /*
 free_node 함수가 호출되면 먼저 캐시 노드에 할당된 키문자열 메모리를 free함수를 사용하여 해제,이것은해당 키 문자열이 동적으로 할당되었으므로 메모리 누수를 방지
-다음으로, 캐시 노드에 할당된 값 문자열 메모리를 마찬가지로 free함수를 사용하여 해제, 값 문자열 역시 동적으로 할당되었으며,메모리를 반호나하여 누수를방지.
+다음으로, 캐시 노드에 할당된 값 문자열 메모리를 마찬가지로 free함수를 사용하여 해제, 값 문자열 역시 동적으로 할당되었으며,메모리를 반환하여 누수를 방지.
 마지막으로 캐시노드 자체의 메모리를 free 함수를 사용하여 해제, 이것은 캐시 노드 구조체 자체의 메모리를 반환하는 단계
 */
 /* 동적으로 할당된 캐시 노드를 해제하고 해당 메모리를 반환하는 함수 */
@@ -53,7 +52,6 @@ void free_node(cache_node *free_node)
 /* 노드를 삭제하는 함수 */
 void delete_node(cache *target_cache, cache_node *delete_node)
 {
-
     // 1. 삭제 노드 prev랑 next를 연결한다.
     // 1.1 prev 노드의 next를 삭제 노드의 next로 변경
     if (delete_node->prev != NULL)
@@ -73,14 +71,14 @@ void delete_node(cache *target_cache, cache_node *delete_node)
 //  3. 데이터 찾기 (find_value)
 //         1. key를 입력하면 데이터 찾기
 //         2. 데이터를 찾으면 1 반환 (buf 값을 인자로 받고 넣어주면 데이터는 버퍼에 값 채우기)
-//             이후 찾은 데이터를 삭제하고, 링크드 리스트 가장 앞에 넣어주자(LRU를 위해)
+//            이후 찾은 데이터를 삭제하고, 링크드 리스트 가장 앞에 넣어주자(LRU를 위해)
 //         3. 데이터를 못 찾으면 0 반환
 int find_cache(cache *target_cache, char *key, char *buf)
 {
     cache_node *start = target_cache->root; // 시작 노드 설정
     while (start != NULL)
     {
-        if (strcmp(start->key, key) == 0)
+        if (strcmp(start->key, key) == 0) // 같으면 0을 반환
         {                              // 같은 키 값을 찾으면?
             strcpy(buf, start->value); // 버퍼에 value 넣기
             // 이전에 있던 캐시를 삭제하고, 가장 앞에 넣는다.
@@ -94,21 +92,22 @@ int find_cache(cache *target_cache, char *key, char *buf)
 }
 
 // 캐시가 잘 동작하는지 확인하기 위한 출력 함수
-int print_cache(cache *target_cache)
-{
-    cache_node *start = target_cache->root;          // 시작 노드 설정
-    printf("cache size = %d\n", target_cache->size); // 캐시 총 사이즈 출력
-    printf("cache root = %s\n", target_cache->root); // 캐시 시작 포인터 출력
-    printf("cache tail = %s\n", target_cache->tail); // 캐시 마지막 포인터 출력
-    printf("==============\n");
-    while (start != NULL)
-    { // 마지막 노드까지 값 출력하기
-        printf("node key = %s\n", start->key);
-        printf("node vaue = %s\n", start->value);
-        printf("==============\n");
-        start = start->next;
-    }
-}
+// int print_cache(cache *target_cache)
+// {
+//     cache_node *start = target_cache->root;          // 시작 노드 설정
+//     printf("cache size = %d\n", target_cache->size); // 캐시 총 사이즈 출력
+//     printf("cache root = %s\n", target_cache->root); // 캐시 시작 포인터 출력
+//     printf("cache tail = %s\n", target_cache->tail); // 캐시 마지막 포인터 출력
+//     printf("==============\n");
+//     while (start != NULL)
+//     { // 마지막 노드까지 값 출력하기
+//         printf("node key = %s\n", start->key);
+//         printf("node vaue = %s\n", start->value);
+//         printf("==============\n");
+//         start = start->next;
+//     }
+// }
+
 // 4. 데이터 저장
 //     1. 최대 오브젝트 사이즈 이하만 저장
 //     2. 저장은 무조건 가장 앞에

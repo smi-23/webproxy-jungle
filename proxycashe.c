@@ -23,11 +23,11 @@ int main(int argc, char **argv)
 {
     int listenfd, *connfd;                 // 서버 소켓 및 클라이언트 소켓 식별자 변수
     char hostname[MAXLINE], port[MAXLINE]; // 호스트 이름과 포트 번호를 저장할 변수
-    proxy_cache = new_cache();             // 캐시 객체 초기화
-    char buf[MAXLINE];                     // 일시적으로 문자열을 저장할 버퍼
     socklen_t clientlen;                   // 클라이언트 주소 구조체 크기 변수
     struct sockaddr_storage clientaddr;    // 클라이언트 주소 정보를 저장할 구조체
     pthread_t tid;                         // 스레드 식별자 변수
+    proxy_cache = new_cache();             // 캐시 객체 초기화
+    char buf[MAXLINE];                     // 일시적으로 문자열을 저장할 버퍼
 
     /* Check command line args */
     if (argc != 2)
@@ -42,10 +42,9 @@ int main(int argc, char **argv)
         clientlen = sizeof(clientaddr);
         /* pthread_create의 경우 argp 인자가 void* 이다.
         따라서 연결 식별자를 인자로 넣어줄 수 있게 안전하게 포인터를 만들어준다. */
-        connfd = Malloc(sizeof(int));
+        connfd = (int *)Malloc(sizeof(int));
         *connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen); // 포인터가 가리키는 값을 연결 식별자 값으로.
-        Getnameinfo((SA *)&clientaddr, clientlen, hostname, MAXLINE,
-                    port, MAXLINE, 0);
+        Getnameinfo((SA *)&clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, 0);
         printf("Accepted connection from (%s, %s)\n", hostname, port);
 
         /*
@@ -177,7 +176,7 @@ int parse_uri(char *uri, char *host, char *port)
 {
     char *token; // 토큰으로 분리할 때 사용할 포인터
 
-    // 호스트 부분 찾기
+    // 호스트 부분 찾기 http://이 있다는 가정
     token = strtok(uri, "/");  // URI에서 첫 번째 슬래시('/') 전까지를 호스트로 판단합니다.
     token = strtok(NULL, ":"); // ':' 문자를 기준으로 다음 토큰을 찾습니다.
     strcpy(host, ++token);     // 호스트 문자열을 복사합니다.

@@ -48,7 +48,7 @@ typedef struct cache
 cache *new_cache();                                            // 캐시 초기화
 int find_cache(cache *target_cache, char *key, char *buf);     // 캐시에서 값 찾기
 int insert_cache(cache *target_cache, char *key, char *value); // 캐시에 값 넣기
-int init_cache(cache *target_cache);                           // 캐시 시작하기
+// int init_cache(cache *target_cache);                           // 캐시 시작하기
 
 #endif
 // end __CASH_H__
