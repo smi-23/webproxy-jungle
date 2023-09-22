@@ -99,7 +99,7 @@ void *thread(void *vargp)
 /* 클라이언트의 요청을 처리하는 함수, HTTP 헤더를 파싱하고, URI를 추출한다.
 추출한 URI를 사용하여 서버로부터 데이터를 가져오는 send-request 함수를 호출한다. */
 void do_it(int connfd)
-{/* 1. 클라이언트로부터 받은 요청의 헤더를 읽고 필요한 정보를 저장 */
+{ /* 1. 클라이언트로부터 받은 요청의 헤더를 읽고 필요한 정보를 저장 */
     int clientfd;
     // 헤더 정보를 저장할 변수들
     char buf[MAXLINE], host[MAXLINE], port[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
@@ -108,7 +108,7 @@ void do_it(int connfd)
 
     /* Read request line and headers from Client */
     // rio 라이브러리를 사용하여 입력 스트림 초기화
-    Rio_readinitb(&rio, connfd);       // rio 버퍼와 fd(proxy의 connfd)를 연결시켜준다.
+    Rio_readinitb(&rio, connfd); // rio 버퍼와 fd(proxy의 connfd)를 연결시켜준다.
     // 헤더라인을 읽음
     Rio_readlineb(&rio, buf, MAXLINE); // 그리고 rio(==proxy의 connfd)에 있는 한 줄(응답 라인)을 모두 buf로 옮긴다.
     printf("Request headers to proxy:\n");
